@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: PERSONAL ROUTINE API
+  description: An API to register tasks of your routine
+  contact:
+    name: David Veiga
+    email: david@david.blog.br
+    url: http://www.david.blog.br
+
+paths:
+  /task:
+    post:
+      summary: Create a task
+      description: Create a task for the user
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+      requestBody:
+        description: Create a new task for the user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+    get:
+      summary: Returns all tasks of the user
+      description: Return all tasks of the user actives and inactives
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the task
+          example: '1D213D-123DVCSA-24234ASD'
+        frequency:
+          type: string
+          pattern: '^DAILY|WEEKLY|MONTHLY$'
+          example: WEEKLY
+          description: The frequency of the task
+        days:
+          description: Which days this task must occur
+          type: array
+          items:
+            type: string
+            example: ['2','3','4']
+        onlyworkdays:
+          description: If the task should be scheduled only in weekdays or all days
+          type: boolean
+          example: false
+        startdate:
+          description: When the task should start
+          type: string
+          format: date
+          nullable: true
+          example: '2021-05-01'
+        enddate:
+          description: When the task should end
+          type: string
+          format: date
+          nullable: true
+          example: '2022-05-01'
+        active:
+          description: Status of the task
+          type: boolean
+          nullable: false
+          example: true
